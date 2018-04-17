@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.FileReader;
 import java.io.File;
-import java.nio.file.Files;
 /**
  *
  * @author Igor
@@ -81,50 +80,22 @@ class Communication  implements Runnable {
             if(part[0].equals("GET")){               
                 String serverPath = new File("").getAbsolutePath();
                 serverPath+="/www";
-                String folder;
                 
-                if(part[1].compareTo("/")==0){
-                    folder=part[1];
-                }
-                else{
+                if(part[1].compareTo("/")==0)
+                    serverPath+="/index.html";
+                else
                     serverPath+=part[1];
-                    folder=part[1]+"/";
-                }
                 File path = new File(serverPath);
-                File[] listOfFiles = path.listFiles();
                 
                 if(path.isDirectory()){
-                    String sb;
-                    sb = "<html>\n" +
-                            "<head>\n" +
-                            "   <title></title>\n" +
-                            "</head>\n" +
-                            "<body>\n";
-
-                            for (int i = 0; i < listOfFiles.length; i++) {
-                                if (listOfFiles[i].isDirectory()) {
-                                    sb+="<p><a href='"+folder+""+listOfFiles[i].getName()+"'>"+
-                                    listOfFiles[i].getName()+"</a></p>";
-                                }
-                            }   
-                            for (int i = 0; i < listOfFiles.length; i++){
-                                if (listOfFiles[i].isFile()) {
-                                    sb+="<p><a href='"+folder+""+listOfFiles[i].getName()+"'>"+
-                                    listOfFiles[i].getName()+"</a></p>";
-                                }
-                            }
-                           
-                        sb+="</body>\n" +
-                        "</html>";
-                         
                     response = "HTTP/1.1 200 OK\n" +
                                 "Date: Mon, 27 Jul 2009 12:28:53 GMT\n" +
                                 "Server: Apache/2.2.14 (Win32)\n" +
                                 "Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n" +
-                                "Content-Length: "+sb.length()+"\n" +
+                                "Content-Length: 88\n" +
                                 "Content-Type: text/html\n" +
                                 "Connection: Closed\n\n";
-                    response+=sb;
+                    
                     os.write(response.getBytes());
                     os.flush();
                 }
@@ -132,8 +103,7 @@ class Communication  implements Runnable {
                     StringBuilder sb= new StringBuilder("");                    
                     
                     file = new FileReader(path.toString());
-                    
-                    String cType = Files.probeContentType(path.toPath());
+
                     char[]c=new char[1];
                     int len=0;
                     int count;
@@ -142,13 +112,13 @@ class Communication  implements Runnable {
                         len+=count;
                         sb.append(c[0]);
                     }while(count>0);
-                    len++;
+                    
                      response = "HTTP/1.1 200 OK\n" +
                                 "Date: Mon, 27 Jul 2009 12:28:53 GMT\n" +
                                 "Server: Apache/2.2.14 (Win32)\n" +
                                 "Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n" +
                                 "Content-Length: "+len+"\n" +
-                                "Content-Type: "+cType+"\n" +
+                                "Content-Type: text/html\n" +
                                 "Connection: Closed\n\n";                    
                     os.write(response.getBytes());
                     os.write(sb.toString().getBytes());
@@ -167,8 +137,8 @@ class Communication  implements Runnable {
                         count = file.read(c);
                         len += count;
                         sb.append(c[0]);
-                    }while(count>0);
-                    len++;
+                    }while(len>0);
+                   
                     response = "HTTP/1.1 404 Not Found\n" +
                                 "Date: Sun, 18 Oct 2012 10:36:20 GMT\n" +
                                 "Server: Apache/2.2.14 (Win32)\n" +
@@ -183,7 +153,7 @@ class Communication  implements Runnable {
                 }
                         
             }
-            client.close();
+            server.close();
         }
         catch(IOException e){
             System.out.println(e.getMessage());
@@ -192,5 +162,4 @@ class Communication  implements Runnable {
             Logger.getLogger(Communication.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }
