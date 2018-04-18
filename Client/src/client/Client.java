@@ -26,17 +26,21 @@ public class Client {
     public static void main(String[] arg) throws IOException {
         
         String []args = new String[1];
-        args[0] = "ufmg.br";
+        args[0] = "127.0.0.1/images/chart.png";
         
-        String path=args[0];
-		
+	String addr = args[0].split("/")[0];
         byte[]b= new byte[1];
         int port=0;
-
+        int begin,end,len;
+        String path;
+        begin = args[0].indexOf("/");
+        end = args[0].lastIndexOf("/");
+        path = args[0].substring(begin, end+1);
+        
         if(args.length==1)port=80;
         else Integer.parseInt(args[1]);
 
-        try (Socket client = new Socket(args[0], port)) {
+        try (Socket client = new Socket(addr, port)) {
             System.out.println("O client se conectou ao servidor!");
             System.out.println(client.toString());
             
@@ -65,8 +69,8 @@ public class Client {
             
             System.out.println(response.split("\n")[0]);
             
-            int begin = response.indexOf("Content-");
-            int end,len;
+            begin = response.indexOf("Content-");
+            
             if(response.indexOf("\r", begin)>0)
                 end = response.indexOf("\r", begin);
             else
