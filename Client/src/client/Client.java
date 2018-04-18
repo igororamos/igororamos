@@ -32,10 +32,21 @@ public class Client {
         byte[]b= new byte[1];
         int port=0;
         int begin,end,len;
-        String path;
+        String path,folder;        
+        String s;
         begin = args[0].indexOf("/");
         end = args[0].lastIndexOf("/");
-        path = args[0].substring(begin, end+1);
+        
+        if(begin<0)s="/";
+        else s = args[0].substring(begin,args[0].length());
+        
+        if(end <0)folder=args[0];
+        else folder=args[0].substring(0, end+1);
+        
+        if(end ==args[0].length()|| end ==-1){
+            path = args[0]+"/index.html";
+        }
+        else path = args[0];
         
         if(args.length==1)port=80;
         else Integer.parseInt(args[1]);
@@ -47,7 +58,7 @@ public class Client {
             InputStream is = client.getInputStream();
             OutputStream os = client.getOutputStream();
             
-            String request = "GET / HTTP/1.1\n" +
+            String request = "GET "+s+" HTTP/1.1\n" +
                     "Host: "+client.getInetAddress().getHostName()+"\n" +
                     "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0\n" +
                     "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\n" +
@@ -62,8 +73,8 @@ public class Client {
             String response ="";
             while(true)
             {
-                is.read(b);
-                response+=(char)b[0];
+                
+                response+=(char)is.read();
                 if(response.contains("\n\n") || response.contains("\r\n\r\n"))break;
             }
             
@@ -80,8 +91,8 @@ public class Client {
             byte[]buffer = new byte[len];
             is.read(buffer);
             
-            new File(path).mkdirs();
-            File file = new File(path+"/index.html");
+            new File(folder).mkdirs();
+            File file = new File(path);
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 fos.write(buffer);
                 fos.flush();
