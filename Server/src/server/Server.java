@@ -25,14 +25,21 @@ public class Server {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        String s;
+        if(args.length>0)
+            s= args[0];
+        else s="www";
         
-        
+        int port;
+        if(args.length<2)
+            port = 80;
+        else port = Integer.parseInt(args[1]);
         try{
             ServerSocket server;
-            server = new ServerSocket(80);
-            System.out.println("Servidor escutando na porta 80");
+            server = new ServerSocket(port);
+            System.out.println("Servidor escutando na porta "+port);
             
-            Communication comm = new Communication(server);
+            Communication comm = new Communication(server,s);
             
             Thread threadComm = new Thread(comm);
             threadComm.start();
@@ -47,8 +54,10 @@ public class Server {
 class Communication  implements Runnable {
     
     private final ServerSocket server;   
-   Communication(ServerSocket server){
+    private final String s;   
+   Communication(ServerSocket server,String s){
        this.server = server;
+       this.s = s;
    }
    
     @Override
@@ -63,7 +72,7 @@ class Communication  implements Runnable {
             System.out.println("Nova conexão com o cliente " +     
                     client.getInetAddress().getHostAddress());
             Thread.sleep(200);
-            new Thread(new Communication(server)).start();
+            new Thread(new Communication(server,s)).start();
 
             OutputStream os = client.getOutputStream();
 
