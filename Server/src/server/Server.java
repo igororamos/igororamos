@@ -102,22 +102,26 @@ class Communication  implements Runnable {
                 File[] listOfFiles = path.listFiles();
                 
                 if(path.isDirectory()){
+					
                     String sb;
                     sb = "<html>\n" +
                             "<head>\n" +
                             "   <title></title>\n" +
+							"<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'"+
+							"integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ'"+
+							"crossorigin='anonymous'>"+
                             "</head>\n" +
                             "<body>\n";
 
                             for (int i = 0; i < listOfFiles.length; i++) {
                                 if (listOfFiles[i].isDirectory()) {
-                                    sb+="<p><a href='"+folder+""+listOfFiles[i].getName()+"'>"+
+                                    sb+="<p> <i class='far fa-folder'></i> <a href='"+folder+""+listOfFiles[i].getName()+"'>"+
                                     listOfFiles[i].getName()+"</a></p>";
                                 }
                             }   
                             for (int i = 0; i < listOfFiles.length; i++){
                                 if (listOfFiles[i].isFile()) {
-                                    sb+="<p><a href='"+folder+""+listOfFiles[i].getName()+"'>"+
+                                    sb+="<p> <i class='far fa-file'></i> <a href='"+folder+""+listOfFiles[i].getName()+"'>"+
                                     listOfFiles[i].getName()+"</a></p>";
                                 }
                             }
