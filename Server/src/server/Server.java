@@ -103,42 +103,42 @@ class Communication  implements Runnable {
                 
                 if(path.isDirectory()){
 					
-                    String sb;
-                    sb = "<html>\n" +
-                            "<head>\n" +
-                            "   <title></title>\n" +
-							"<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'"+
-							"integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ'"+
-							"crossorigin='anonymous'>"+
-                            "</head>\n" +
-                            "<body>\n";
+						String sb;
+						sb = "<html>\n" +
+								"<head>\n" +
+								"<title></title>\n" +
+								"<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'"+
+								"integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ'"+
+								"crossorigin='anonymous'>"+
+								"</head>\n" +
+								"<body>\n";
 
-                            for (int i = 0; i < listOfFiles.length; i++) {
-                                if (listOfFiles[i].isDirectory()) {
-                                    sb+="<p> <i class='far fa-folder'></i> <a href='"+folder+""+listOfFiles[i].getName()+"'>"+
-                                    listOfFiles[i].getName()+"</a></p>";
-                                }
-                            }   
-                            for (int i = 0; i < listOfFiles.length; i++){
-                                if (listOfFiles[i].isFile()) {
-                                    sb+="<p> <i class='far fa-file'></i> <a href='"+folder+""+listOfFiles[i].getName()+"'>"+
-                                    listOfFiles[i].getName()+"</a></p>";
-                                }
-                            }
-                           
-                        sb+="</body>\n" +
-                        "</html>";
-                         
-                    response = "HTTP/1.1 200 OK\n" +
-                                "Date: Mon, 27 Jul 2009 12:28:53 GMT\n" +
-                                "Server: Apache/2.2.14 (Win32)\n" +
-                                "Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n" +
-                                "Content-Length: "+sb.length()+"\n" +
-                                "Content-Type: text/html\n" +
-                                "Connection: Closed\n\n";
-                    response+=sb;
-                    os.write(response.getBytes());
-                    os.flush();
+								for (int i = 0; i < listOfFiles.length; i++) {
+									if (listOfFiles[i].isDirectory()) {
+										sb+="<p> <i class='far fa-folder'></i> <a href='"+folder+""+listOfFiles[i].getName()+"'>"+
+										listOfFiles[i].getName()+"</a></p>";
+									}
+								}   
+								for (int i = 0; i < listOfFiles.length; i++){
+									if (listOfFiles[i].isFile()) {
+										sb+="<p> <i class='far fa-file'></i> <a href='"+folder+""+listOfFiles[i].getName()+"'>"+
+										listOfFiles[i].getName()+"</a></p>";
+									}
+								}
+							   
+							sb+="</body>\n" +
+							"</html>";
+							 
+						response = "HTTP/1.1 200 OK\n" +
+									"Date: Mon, 27 Jul 2009 12:28:53 GMT\n" +
+									"Server: Apache/2.2.14 (Win32)\n" +
+									"Last-Modified: Wed, 22 Jul 2009 19:15:56 GMT\n" +
+									"Content-Length: "+sb.length()+"\n" +
+									"Content-Type: text/html\n" +
+									"Connection: Closed\n\n";
+						response+=sb;
+						os.write(response.getBytes());
+						os.flush();
                 }
                 else if(path.isFile()){
                                       
